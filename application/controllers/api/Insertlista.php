@@ -16,6 +16,7 @@ class Insertlista extends REST_Controller {
         parent:: __construct();
         $this->load->database();
         //$this->load->model('Insert_asesoria', 'InsertAsesoria');
+        $this->load->model('Loginapi_model');
     }
        
      /**
@@ -39,6 +40,7 @@ class Insertlista extends REST_Controller {
     public function test_post($id){
     header("Access-Control-Allow-Origin: *");
     $_POST = json_decode($this->security->xss_clean(file_get_contents("php://input")),true);
+    date_default_timezone_set('America/Merida');
     
                     $respuesta_1 = $this->input->post('respuesta_1');
                     $respuesta_2 = $this->input->post('respuesta_2');
@@ -80,12 +82,26 @@ class Insertlista extends REST_Controller {
                         'respuesta_12'=>$respuesta_12,
                         'total'=>$resultado,
                         'created_at'=>date("Y-m-d"),
-                        'updated_at'=>date('Y-m-d H:i:s'),
+                        'updated_at'=>date("Y-m-d H:i:s"),
                         'user_id'=>$id
                     );
         
         $this->db->insert('cuestionarios', $data);
+        $nu_fecha = $this->Loginapi_model->fecha($id);
+        $max_fecha = MAX($nu_fecha);
+        $fe_max = array_values($max_fecha);
+
+        $nu_id = $this->db->get_where('cuestionarios', ['user_id' => $id, 'created_at' => $fe_max[0]])->result();
+
+        $nu_data = array (
+                        'usuarios_id'=>$id,
+                        'cuestionarios_id'=>$nu_id[0]->id,
+                        'created_at'=>date("Y-m-d")
+                    );
+
+        $this->db->insert('seguimientos', $nu_data);
         $this->set_response($data, REST_Controller::HTTP_OK);
+
     }   
 }
 

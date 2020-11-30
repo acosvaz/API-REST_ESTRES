@@ -187,5 +187,41 @@ class Catalogoapi_model extends CI_Model {
       
       
     }
+
+       public function status($id) {
+        
+       // if(!is_null($id,$nu)){
+            $status = $this->db->get_where('cuestionarios', ['user_id' => $id])->result();
+            
+            if (empty($status)){
+
+                $valid = array (
+                            'fecha' => 'Sin registro',
+                            'total' => '2');
+
+            return $valid;
+            
+            } else {
+            
+                $this->db->select ('created_at');
+                $this->db->from('cuestionarios');
+                $this->db->where('user_id',$id);
+                $query = $this->db->get();
+                $result = $query->result_array();
+                $max_fecha = MAX($result);
+                $fe_max = array_values($max_fecha);
+
+                $nu_id = $this->db->get_where('cuestionarios', ['user_id' => $id, 'created_at' => $fe_max[0]])->result();
+
+                $nu_data = array (
+                        'fecha'=>$nu_id[0]->created_at,
+                        'total'=>$nu_id[0]->total
+                    );
+
+                return $nu_data;
+        }
+      
+      
+    }
     
 }

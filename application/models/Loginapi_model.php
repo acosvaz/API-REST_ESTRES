@@ -19,7 +19,7 @@ class Loginapi_model extends CI_Model {
     }
     
     public function rol($id) {
-                $this->db->select('tipos_id');
+                $this->db->select ('tipos_id');
                 $this->db->from('usuarios');
                 $this->db->where('id',$id);
 		$query = $this->db->get();
@@ -30,4 +30,18 @@ class Loginapi_model extends CI_Model {
         }
         return false;
     }
+
+    public function fecha($id) {
+                $this->db->select ('created_at');
+                $this->db->from('cuestionarios');
+                $this->db->where('user_id',$id);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            //$result = $query->result_array();
+            return $query->result_array();
+            //return $query->row();
+        }
+        return false;
+    }
+
 }

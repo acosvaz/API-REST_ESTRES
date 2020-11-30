@@ -100,6 +100,16 @@ class Catalogo extends REST_Controller {
             $this->response(array('error' => 'No hay promociones disponibles'), 404);
         }
     }
+
+           public function status_get($id){
+        $catalogo = $this->Catalogoapi_model->status($id);
+        
+        if(!is_null($catalogo)){
+            $this->response($catalogo, 200);
+        } else {
+            $this->response(array('error' => 'No hay promociones disponibles'), 404);
+        }
+    }
     
 }
 

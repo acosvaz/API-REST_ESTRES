@@ -65,7 +65,7 @@ class Insertfoto extends REST_Controller {
     
     	function upload_post() {
            header("Access-Control-Allow-Origin: *");
-          // Recuerda activar $_POST = json_decode($this->security->xss_clean(file_get_contents("php://input")),true);
+          // $_POST = json_decode($this->security->xss_clean(file_get_contents("php://input")),true);
            header('Access-Control-Allow-Methods: POST');
 	   header('Access-Control-Allow-Headers: Content-Type');
             
@@ -98,8 +98,8 @@ class Insertfoto extends REST_Controller {
 				}
 				
 				if($this->upload->do_upload('file')) {
-					//$this->response('http://' . $_SERVER['SERVER_NAME'] . $upload_path . $_FILES['file']['name']);
-                                         $nu_curso = $this->input->post('nu_curso');
+					$this->response('http://' . $_SERVER['SERVER_NAME'] . $upload_path . $_FILES['file']['name']);
+                                  /*       $nu_curso = $this->input->post('nu_curso');
                                          $competencia = $this->input->post('competencia');
                                          $nu_asesoria = $this->post('nu_asesoria');
                                          $fotouno = 'http://' . $_SERVER['SERVER_NAME'] . $upload_path . $_FILES['file']['name'] ;
@@ -118,7 +118,7 @@ class Insertfoto extends REST_Controller {
                                             );
                                          
                                        $result=$this->InsertAsesoria->asesoria($data);
-                                       $response=$this->response('si se pudo');
+                                       $response=$this->response($fotouno);*/
 					return $response;
 				} else {
 					$this->response('Error during file upload => ' . $this->upload->display_errors(), 500);
